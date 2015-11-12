@@ -13,13 +13,9 @@ var Employee = function (array) {
 	this.reviewRating = array[3];
 }
 
-var evaluatedEmployee = function (employee) {
-	this.name = employee.name;
-	this.sti = this.getSti(employee);
-	this.annualSalary = employee.annualSalary * (1 + this.sti);
-	this.bonus = this.annualSalary - employee.annualSalary;
+var EvaluatedEmployee = function (employee) {
 	
-	this.getSti = function(employee) {
+	getSti = function(employee) {
 		
 		var kudos;
 		switch (employee.reviewRating) {
@@ -37,16 +33,22 @@ var evaluatedEmployee = function (employee) {
 		}
 		
 		if (employee.employeeNumber.length == 4) {kudos += 5;}
-		if (parsInt(employee.Salary) > 65000) {kudos--;}
+		if (parseInt(employee.Salary) > 65000) {kudos--;}
 		if (kudos > 13) {kudos = 13;}
 
 	return kudos;
+	}
+	
+	this.name = employee.name;
+	this.sti = getSti(employee);
+	this.annualSalary = Math.round(employee.annualSalary * (1 + .01 * this.sti));
+	this.bonus = this.annualSalary - employee.annualSalary;
 }
 
 var employees = [new Employee(atticus), new Employee(jem), new Employee(boo), new Employee(scout)];
 
 var evaluate = function (employee) {
-	return evaluatedEmployee(employee);
+	return new EvaluatedEmployee(employee);
 }
 
 for (var i = 0; i < employees.length; i++) {
